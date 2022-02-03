@@ -479,18 +479,17 @@ def forecast_dataframe_to_cube(
             units=TIME_COORDS["forecast_reference_time"].units,
         )
 
-        # generalise? 
         # what do units become for different things? 
         if VAR_TYPE == "percentile":
             unit = "%"
         else:
             unit = '1'
 
-        for var in sorted(df[VAR_TYPE].unique()):
+        for var_val in sorted(df[VAR_TYPE].unique()):
             var_coord = DimCoord(
-                np.float32(var), long_name=VAR_TYPE, units=unit
+                np.float32(var_val), long_name=VAR_TYPE, units=unit
             )
-            var_df = time_df.loc[time_df[VAR_TYPE] == percentile]
+            var_df = time_df.loc[time_df[VAR_TYPE] == var_val]
             cube = build_spotdata_cube(
                 var_df["forecast"].astype(np.float32),
                 var_df["cf_name"].values[0],
@@ -512,7 +511,7 @@ def forecast_dataframe_to_cube(
     if not cubelist:
         return
     cube = cubelist.merge_cube()
-    if VAR_TYPE == "percentile"
+    if VAR_TYPE == "percentile":
         return RebadgePercentilesAsRealizations()(cube)
     else:
         return cube
