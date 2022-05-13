@@ -467,7 +467,7 @@ class OccurrenceWithinVicinity(PostProcessingPlugin):
         unmasked_cube_data = cube.data.copy()
         if np.ma.is_masked(cube.data):
             unmasked_cube_data = cube.data.data.copy()
-            unmasked_cube_data[cube.data.mask] = -np.inf
+            unmasked_cube_data[cube.data.mask] = -9999
         if self.land_mask_cube:
             max_data = np.empty_like(cube.data)
             for match in (True, False):
